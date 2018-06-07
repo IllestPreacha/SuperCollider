@@ -86,7 +86,7 @@ SynthDef(\kickTwist,
 p = Pbind(
 	\instrument, \kickTwist,
 	\dur, Pseq([0.6, 0.15, 0.15], inf),
-	//\octave, Pseq([4,5,6], 87,90,110,inf),
+	\octave, Pseq([4,5,6], 87,90,110,inf)+Penv([24,19,80],inf),
 	\midinote, Pseq([42, 83, [32,86,35],30,40,34,120], inf),
 	\db, 5
 ).play;
