@@ -91,3 +91,27 @@ p = Pbind(
 	\db, 5
 ).play;
 )
+
+SynthDef(\kickTwist2,
+	{
+		arg freq = 670,freq2 = 100, out = 0, amp = 4.1, sustain = 0.101;
+		var audio,audio2,freq3;
+		freq2;
+		audio = SinOsc.ar(freq, mul: amp);
+		audio = audio * EnvGen.ar(Env.perc(0.001,sustain-0.001), doneAction: 2);
+		audio2 = PinkNoise.ar(freq2, mul:amp);
+		audio2 = audio2 * EnvGen.ar(Env.perc(0.02,sustain-0.02), doneAction: 2);
+		freq3 = freq - freq2;
+		Out.ar(out,audio);
+}).add;
+
+(
+p = Pbind(
+	\instrument, \kickTwist2,
+	\dur, Prand([0.5,0.3,0.1,0.25,0.15,1,2], inf),
+	\octave, Pseq([4,5,6], 90.rand,90,110,inf)+Penv([24,19,80],inf),
+	\midinote, Pseq([42, 83, [32,86,35],30,40,34,120], inf),
+	\db, Penv([-11,-20,17,5],[20,15]),
+).play;
+)
+
