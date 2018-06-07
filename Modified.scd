@@ -36,3 +36,35 @@ SynthDef.new(\ChipOff, {
 	Out.ar(0, sig);
 }).add;
 )
+
+//Two Remixes of D0kt0r0 Nov05
+
+SynthDef(\nov08,{
+    arg freq=440,freq2 = 660, amp=0.1,sustain=1.0,out=0,lpf=1000, attack=1.5;
+    var audio,env;
+	freq = Clip.kr(freq,10,3000);
+	freq2 = Wrap.kr(freq,10,3000);
+    sustain = Clip.kr(sustain,0.201,1000);
+	attack = Pulse.kr(attack,5,100,200); 
+    audio = Pulse.ar(freq:freq,mul:amp);
+    audio = Wrap.ar(audio,freq:lpf);
+    env = Env.new([0,1,0],[sustain/2,sustain/2]);
+    audio = audio * EnvGen.ar(env,doneAction:2);
+    Out.ar(out,audio);
+}).add;
+
+SynthDef(\nov07,{
+    arg freq=440,freq2 = 660, amp=0.1,sustain=1.0,out=0,lpf=1000, attack=1.5;
+    var audio,env,freq3;
+	freq = Clip.kr(freq,10,3000);
+	freq2 = Wrap.kr(freq,10,3000);
+	freq3 = freq + freq2;
+    sustain = Clip.kr(sustain,0.201,1000);
+	attack = Pulse.kr(attack,5,100,200); 
+    audio = Saw.ar(audio,freq:lpf/2);
+    env = Env.new([0,1,0],[sustain/2,sustain/2]);
+    audio = audio * EnvGen.ar(env,doneAction:2);
+    Out.ar(out,audio);
+}).add;
+
+
