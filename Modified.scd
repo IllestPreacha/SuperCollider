@@ -67,4 +67,27 @@ SynthDef(\nov07,{
     Out.ar(out,audio);
 }).add;
 
+//Twisting the Kick Sound with higher Midi Notes and extra frequencies
 
+SynthDef(\kickTwist,
+	{
+		arg freq = 670,freq2 = 100, out = 0, amp = 4.1, sustain = 0.101;
+		var audio,audio2,freq3;
+		freq2;
+		audio = SinOsc.ar(freq, mul: amp);
+		audio = audio * EnvGen.ar(Env.perc(0.001,sustain-0.001), doneAction: 2);
+		audio2 = Pulse.ar(freq2, mul:amp);
+		audio2 = audio2 * EnvGen.ar(Env.perc(0.02,sustain-0.02), doneAction: 2);
+		freq3 = freq - freq2;
+		Out.ar(out,audio);
+}).add;
+
+(
+p = Pbind(
+	\instrument, \kickTwist,
+	\dur, Pseq([0.6, 0.15, 0.15], inf),
+	//\octave, Pseq([4,5,6], 87,90,110,inf),
+	\midinote, Pseq([42, 83, [32,86,35],30,40,34,120], inf),
+	\db, 5
+).play;
+)
