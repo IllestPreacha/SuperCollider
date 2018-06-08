@@ -115,3 +115,26 @@ p = Pbind(
 ).play;
 )
 
+
+(
+SynthDef.new(\ChipOff, {
+	arg freq=Prand([370,250,770,1440],inf), atk=Prand([3.70,2.50,7],inf), rel=0.3, amp=1, pan=0;
+	var sig,sig2,amp1,sig3, env;
+	amp1 = Clip.kr(atk, 0, 0.12) * 0.75;
+	sig = SinOsc.ar(freq);
+	amp1 = sig + amp1;
+	sig2 = Pulse.ar(freq * 2.1);
+	sig3 = PinkNoise.ar(freq * 2.1);
+	env = EnvGen.kr(Env.new([0,1,0], [atk, rel], [1, -1]), doneAction:2);
+	sig = Pan2.ar(sig + sig2 + sig3, pan, amp);
+	sig = sig * env;
+	Out.ar(0, sig);
+}).add;
+)
+
+Pbind(
+	\freq, Prand([300, [500, 231.2], 399.2], inf)+ Pwhite(-0.3, 1.0, inf);, 
+	\dur,Pseq([0.05,0.5,0.55], inf),
+	\midinote, Prand([100,[110,85,55],43,[21,44,90],[100,99,98,75,40],[11,12,13,14,99,100,101,102],87],inf),
+	\octave, Pseq([100,99,100],inf) + Pwhite(-0.3, 1.0, inf);,
+).play;
